@@ -78,6 +78,13 @@ const Sidebar = () => {
                                         <TreeItem nodeId="3" label="Page 2" onClick={()=>history.push("/announcement-page-2")}/>
                                         <TreeItem nodeId="4" label="Page 3" onClick={()=>history.push("/announcement-page-3")}/>
                                     </TreeItem>
+                                    <TreeItem nodeId="5" label="Classes">
+                                    <TreeItem nodeId="6" label="Page 1" onClick={()=>history.push("/class")}/>
+                                    </TreeItem>
+                                    <TreeItem nodeId="7" label="Notification">
+                                    <TreeItem nodeId="8" label="Page 1" onClick={()=>history.push("/class")}/>
+                                    <TreeItem nodeId="9" label="Page 2" onClick={()=>history.push("/notif")}/>
+                                    </TreeItem>
                                 </TreeView>
                             </ListItem>
                         </List>
