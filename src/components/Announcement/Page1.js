@@ -7,6 +7,7 @@ import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import Message from "../Additionals/Message/Message";
+import AudioDialog from '../Additionals/AudioRecorder/AudioDialog'
 
 const styles = makeStyles((theme)=>({
     root:{
@@ -40,6 +41,7 @@ const Page1 = () => {
     const [checked,setChecked] = useState(false);
     const [itemId,setItemId] = useState('');
     const [expand,setExpand] = useState(false);
+    const [audio, setAudio] = React.useState(false);
 
     const handleExpand = (id) => {
         itemId === id ? setItemId("") : setItemId("1");
@@ -82,7 +84,7 @@ const Page1 = () => {
                             />
                         </Grid>
                         <Grid item sm={10}>
-                            <Message/>
+                            <Message audio={audio} setAudio={setAudio}/>
                         </Grid>
                         <Grid item sm={12}>
                             <Typography variant="caption" gutterBottom>
@@ -193,7 +195,9 @@ const Page1 = () => {
                         </Grid>
                     </Grid>
                 </Grid>
+                {audio && <AudioDialog open={audio} setOpen={setAudio} />}
             </Grid>
+            
         </Container>
     )
 }
