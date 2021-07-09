@@ -6,7 +6,7 @@ export default function Audio({ source }) {
     const muiTheme = createMuiTheme({});
     return (
         <ThemeProvider theme={muiTheme}>
-            <AudioPlayer  src={source} />
+            <AudioPlayer variation="primary" src={source} />
         </ThemeProvider>
     )
 }

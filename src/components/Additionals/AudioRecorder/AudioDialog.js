@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, Typography, makeStyles, IconButton } from '@material-ui/core';
+import { Dialog, Typography, makeStyles, IconButton, Card } from '@material-ui/core';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import AudioRecorder2 from './AudioRecorder2';
@@ -9,7 +9,8 @@ const useStyles = makeStyles(theme => ({
     container: {
         margin: 'auto',
         padding: "3%",
-        overflow:'hidden'
+        overflow:'hidden',
+        backgroundColor:'white'
     },
 
     closeButton: {

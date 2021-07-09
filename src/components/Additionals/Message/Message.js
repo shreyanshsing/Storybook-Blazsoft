@@ -8,7 +8,7 @@ import ImageIcon from '@material-ui/icons/Image';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import MicIcon from '@material-ui/icons/Mic';
 import LinkIcon from '@material-ui/icons/Link';
-import VideoDialog from '../Video/VideoDialog';
+import Dialog1 from "../Dialogs/Dialog1";
 
 const styles = makeStyles((theme) => ({
     root: {
@@ -28,7 +28,7 @@ const styles = makeStyles((theme) => ({
 const Message = ({ setAudio}) => {
     const classes = styles();
     const [open, setOpen] = React.useState(false);
-    const [video, setVideo]= React.useState(false);
+    const [openPlayer,setOpenPlayer] = React.useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -39,12 +39,14 @@ const Message = ({ setAudio}) => {
     const startAudioRecording = () => {
         setAudio(true);
     }
-    const startVideoRecording = () => {
-        setVideo(true);
+    const handleClick = (key) => {
+        if(key === "Video"){
+            setOpenPlayer(true);
+        }
     }
     const actions = [
         { icon: <ImageIcon color="primary" fontSize="small" />, name: 'Image' },
-        { icon: <VideocamIcon onClick={() => startVideoRecording()} color="primary" fontSize="small" />, name: 'Video' },
+        { icon: <VideocamIcon color="primary" fontSize="small" />, name: 'Video' },
         { icon: <MicIcon onClick={() => startAudioRecording()} color="primary" fontSize="small" />, name: 'Audio' },
         { icon: <LinkIcon color="primary" fontSize="small" />, name: 'Link' },
     ];
@@ -62,12 +64,12 @@ const Message = ({ setAudio}) => {
                 direction="left"
             >
                 {actions.map((action) => (
-                    <SpeedDialAction
-                        key={action.name}
-                        icon={action.icon}
-                        tooltipTitle={action.name}
-                        onClick={handleClose}
-                    />
+                <SpeedDialAction
+                    key={action.name}
+                    icon={action.icon}
+                    tooltipTitle={action.name}
+                    onClick={()=>handleClick(action.name)}
+                />
                 ))}
             </SpeedDial>
             <TextField
@@ -78,11 +80,11 @@ const Message = ({ setAudio}) => {
                 variant="outlined"
                 margin="dense"
                 placeholder="write here"
-            ></TextField>
+            />
+            {
+                openPlayer ? <Dialog1 open={openPlayer} setOpen={setOpenPlayer}/> : null
+            }
         </div>
-        
-        
-        {video && <VideoDialog open={video} setOpen={setVideo} />}
         </>
     )
 }

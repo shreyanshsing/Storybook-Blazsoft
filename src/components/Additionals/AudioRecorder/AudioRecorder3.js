@@ -3,6 +3,8 @@ import MicIcon from '@material-ui/icons/Mic';
 import StopIcon from '@material-ui/icons/Stop';
 import PauseIcon from '@material-ui/icons/Pause';
 import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
+import PauseCircleFilledSharpIcon from '@material-ui/icons/PauseCircleFilledSharp';
+import PlayCircleFilledSharpIcon from '@material-ui/icons/PlayCircleFilledSharp';
 import { Button, IconButton, Typography } from "@material-ui/core";
 import AudioPlayer from './AudioPlayer';
 
@@ -189,8 +191,9 @@ class Recorder extends Component {
                                 <div style={{textAlign:'center'}} >
                                     <div >
                                         {audioURL !== null && showUIAudio ? (
-
-                                            <AudioPlayer source={audios[0]} />
+                                            <div>
+                                            <AudioPlayer  source={audios[0]} />
+                                            </div>
                                         ) : null}
 
                                     </div>
@@ -215,7 +218,7 @@ class Recorder extends Component {
                                         <IconButton
                                         onClick={e => this.startRecording(e)}
                                     >
-                                        <MicIcon color="primary" />
+                                        <MicIcon fontSize='large' color="primary" />
                                     </IconButton>
                                     </>
                                     ) : null}</>}
@@ -224,7 +227,7 @@ class Recorder extends Component {
 
                                 {!recording ? null : (
                                     <div>
-                                        <IconButton onClick={e => this.stopRecording(e)}><StopIcon color="primary" /></IconButton>
+                                        <IconButton onClick={e => this.stopRecording(e)}><StopIcon fontSize='large' color="primary" /></IconButton>
 
                                         <IconButton
                                             onClick={
@@ -235,8 +238,8 @@ class Recorder extends Component {
 
                                         >
                                             {pauseRecord ?
-                                                <PlayCircleOutlineIcon /> :
-                                                <PauseIcon color="primary" />}
+                                                <PlayCircleFilledSharpIcon fontSize='large' color="primary"/> :
+                                                <PauseCircleFilledSharpIcon fontSize='large' color="primary" />}
                                         </IconButton>
                                     </div>
                                 )}

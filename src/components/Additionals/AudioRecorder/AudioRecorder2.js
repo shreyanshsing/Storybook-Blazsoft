@@ -1,6 +1,4 @@
 import React, {useState} from 'react'
-//import { Recorder } from 'react-voice-recorder'
-//import 'react-voice-recorder/dist/index.css'
 import Recorder from './AudioRecorder3'
 
 export default function AudioRecorder2() {
@@ -47,8 +45,6 @@ export default function AudioRecorder2() {
                 handleAudioUpload={(data) => handleAudioUpload(data)}
                 handleReset={() => handleReset()}
                 mimeTypeToUseWhenRecording={null} />
-                
-
         </div>
     )
 }
