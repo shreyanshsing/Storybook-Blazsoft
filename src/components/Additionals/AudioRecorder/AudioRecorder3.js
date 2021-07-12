@@ -1,11 +1,9 @@
 import React, { Component } from "react";
 import MicIcon from '@material-ui/icons/Mic';
 import StopIcon from '@material-ui/icons/Stop';
-import PauseIcon from '@material-ui/icons/Pause';
-import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline';
 import PauseCircleFilledSharpIcon from '@material-ui/icons/PauseCircleFilledSharp';
 import PlayCircleFilledSharpIcon from '@material-ui/icons/PlayCircleFilledSharp';
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, Tooltip } from "@material-ui/core";
 import AudioPlayer from './AudioPlayer';
 
 const audioType = "audio/*";
