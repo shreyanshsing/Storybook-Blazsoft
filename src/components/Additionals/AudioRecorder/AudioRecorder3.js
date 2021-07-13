@@ -3,7 +3,7 @@ import MicIcon from '@material-ui/icons/Mic';
 import StopIcon from '@material-ui/icons/Stop';
 import PauseCircleFilledSharpIcon from '@material-ui/icons/PauseCircleFilledSharp';
 import PlayCircleFilledSharpIcon from '@material-ui/icons/PlayCircleFilledSharp';
-import { Button, IconButton, Tooltip } from "@material-ui/core";
+import { Button, IconButton, Tooltip, TextField } from "@material-ui/core";
 import AudioPlayer from './AudioPlayer';
 
 const audioType = "audio/*";
@@ -18,11 +18,15 @@ class Recorder extends Component {
             medianotFound: false,
             audios: [],
             audioBlob: null,
-            audioSave:false
+            audioSave:false,
+            importAudio:'',
+            import: false,
+            chooseFile: true
         };
         this.timer = 0;
         this.startTimer = this.startTimer.bind(this);
         this.countDown = this.countDown.bind(this);
+        this.handleChooseAudio= this.handleChooseAudio.bind(this);
     }
 
     handleAudioPause(e) {
@@ -36,6 +40,7 @@ class Recorder extends Component {
         this.startTimer();
         this.mediaRecorder.resume();
         this.setState({ pauseRecord: false });
+        this.setState({import: false });
     }
 
     startTimer() {
@@ -104,6 +109,8 @@ class Recorder extends Component {
         this.startTimer();
         // say that we're recording
         this.setState({ recording: true });
+        this.setState({import: false });
+        this.setState({chooseFile: false });
         
     }
 
@@ -118,9 +125,11 @@ class Recorder extends Component {
         // save the video to memory
         this.saveAudio();
         this.setState({audioSave : true})
+        this.setState({chooseFile: true });
     }
 
     handleReset(e) {
+        this.setState({chooseFile: true });
         if (this.state.recording) {
             this.stopRecording(e);
         }
@@ -139,6 +148,11 @@ class Recorder extends Component {
 
     }
 
+    handleChooseAudio(e){
+        console.log(this.state.importAudio);
+        this.setState({importAudio : e.target.files[0], import: true});
+    }
+
     saveAudio() {
         // convert saved chunks to blob
         const blob = new Blob(this.chunks, { type: audioType });
@@ -146,6 +160,7 @@ class Recorder extends Component {
         const audioURL = window.URL.createObjectURL(blob);
         // append videoURL to list of saved videos for rendering
         const audios = [audioURL];
+        console.log(this.state.audios[0]);
         this.setState({ audios, audioBlob: blob });
         this.props.handleAudioStop({
             url: audioURL,
@@ -154,9 +169,11 @@ class Recorder extends Component {
             duration: this.state.time
         });
     }
+    
 
 
     render() {
+        console.log(this.state.importAudio);
         const buttons = <div style={{marginTop:'13px'}} >
             <Button color="secondary"
                 variant="contained"
@@ -176,6 +193,7 @@ class Recorder extends Component {
             >
                 Record Again
             </Button>
+            
         </div>
         const { recording, audios, time, medianotFound, pauseRecord } = this.state;
         const { showUIAudio, title, audioURL } = this.props;
@@ -190,13 +208,18 @@ class Recorder extends Component {
                                     <div >
                                         {audioURL !== null && showUIAudio ? (
                                             <div>
-                                            <AudioPlayer  source={audios[0]} />
+                                                <AudioPlayer  source={this.state.audios[0]}/>
                                             </div>
                                         ) : null}
-
+                                        {this.state.import ?
+                                                 
+                                                <AudioPlayer  source={URL.createObjectURL(this.state.importAudio)}/> : null
+                                                }
+ 
                                     </div>
                                     {audioURL !== null && showUIAudio ? null :
                                     <>
+                                    { this.state.chooseFile ? <TextField style={{marginTop:"12px"}} accept="audio/mp3" type="file" variant="outlined" onChange={(e)=>this.handleChooseAudio(e)}/> : null}
                                     <div style={{ marginTop: "8px" }} >
                                         <span >
                                             {time.m !== undefined

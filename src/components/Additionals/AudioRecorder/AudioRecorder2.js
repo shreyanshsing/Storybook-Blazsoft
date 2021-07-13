@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import Recorder from './AudioRecorder3'
 
 export default function AudioRecorder2() {
+    const [showUIAudio, setShowUIAudio]= useState(true);
     const [audioDetails, setAudioDetails] =useState({
         url: null,
         blob: null,
@@ -39,7 +40,8 @@ export default function AudioRecorder2() {
                 record={true}
                 title={"New recording"}
                 audioURL={audioDetails.url}
-                showUIAudio
+                showUIAudio={showUIAudio}
+                setShowUIAudio={setShowUIAudio}
                 handleAudioStop={(data) => handleAudioStop(data)}
                 //handleOnChange={(value) => handleOnChange(value, 'firstname')}
                 handleAudioUpload={(data) => handleAudioUpload(data)}

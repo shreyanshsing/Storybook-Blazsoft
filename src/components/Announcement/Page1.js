@@ -3,11 +3,12 @@ import {Container,Typography,Grid,makeStyles,TextField,Button,IconButton,MenuIte
 import { useState } from "react";
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import DeleteOutlineRoundedIcon from '@material-ui/icons/DeleteOutlineRounded';
-import SendRoundedIcon from '@material-ui/icons/SendRounded';
-import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
-import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import Message from "../Additionals/Message/Message";
 import AudioDialog from '../Additionals/AudioRecorder/AudioDialog'
+import DraftMessage from "../Additionals/DraftMessage/DraftMessage";
+import { useDispatch } from "react-redux";
+import { saveMessage } from '../Additionals/DraftMessage/draftMessage.slice';
+import DeleteAlert from '../Additionals/DraftMessage/delete'
 
 const styles = makeStyles((theme)=>({
     root:{
@@ -39,14 +40,22 @@ const styles = makeStyles((theme)=>({
 const Page1 = () => {
     const classes = styles();
     const [checked,setChecked] = useState(false);
-    const [itemId,setItemId] = useState('');
-    const [expand,setExpand] = useState(false);
     const [audio, setAudio] = React.useState(false);
+    const [message, setMessage]= useState("");
+    const [label, setLabel]= useState("");
+    const [confirmDelete, setConfirmDelete] = useState(false);
+    const dispatch = useDispatch();
 
-    const handleExpand = (id) => {
-        itemId === id ? setItemId("") : setItemId("1");
-        setExpand(!expand);
+    const send=()=>{
+        const data={
+            "id": label, "label":label, "message": message
+        }
+        if(checked===true){
+            dispatch(saveMessage(data));
+        }
+        
     }
+
     return(
         <Container maxWidth="xl" className={classes.root}>
             <Grid container spacing={3}>
@@ -81,10 +90,12 @@ const Page1 = () => {
                                variant="outlined"
                                margin="dense"
                                placeholder="optional"
+                               value={label}
+                               onChange={(e)=>setLabel(e.target.value)}
                             />
                         </Grid>
                         <Grid item sm={10}>
-                            <Message audio={audio} setAudio={setAudio}/>
+                            <Message audio={audio} setAudio={setAudio} message={message} setMessage={setMessage}/>
                         </Grid>
                         <Grid item sm={12}>
                             <Typography variant="caption" gutterBottom>
@@ -98,7 +109,7 @@ const Page1 = () => {
                         </Grid>
                         <Grid item sm={12} className={classes.flex}>
                             <Button color="primary" type="reset" variant="text" size="large" className={classes.btn}>Clear</Button>
-                            <Button color="primary" type="submit" variant="contained" size="large" className={classes.btn}>Notify</Button>
+                            <Button color="primary" type="submit" variant="contained" size="large" onClick={()=>send()} className={classes.btn}>Notify</Button>
                         </Grid>
                         <Grid item sm={10}>
                             <Divider/>
@@ -107,34 +118,7 @@ const Page1 = () => {
                             <Typography variant="h6" component="b" gutterBottom>OR</Typography>
                         </Grid>
                         <Grid item sm={10}>
-                            <Typography variant="subtitle1" gutterBottom>Choose from saved notifications - </Typography>
-                            <List>
-                                <ListItem divider>
-                                    <ListItemIcon>
-                                        <IconButton onClick={()=>handleExpand("1")}>
-                                            {
-                                                !expand ? <DoubleArrowRoundedIcon color="primary"/> : <ArrowDropDownRoundedIcon color="primary"/>
-                                            }
-                                        </IconButton>
-                                    </ListItemIcon>
-                                    <ListItemText primary="Fee Submission Deadline extended" secondary={
-                                        <Typography variant="caption" gutterBottom>Group - Student's, <br/>
-                                        {
-                                            itemId === "1" ? <p>Message -  Dear Student's Deadline of submitting odd semester fees has been extended.</p> : null
-                                        } </Typography>}/>
-                                    <ListItemSecondaryAction>
-                                        <IconButton>
-                                            <SendRoundedIcon color="primary"/>
-                                        </IconButton>
-                                        <IconButton>
-                                            <EditRoundedIcon color="primary"/>
-                                        </IconButton>
-                                        <IconButton>
-                                            <DeleteOutlineRoundedIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                            </List>
+                            <DraftMessage  setChecked={setChecked} setLabel={setLabel} setMessage={setMessage} setConfirmDelete={setConfirmDelete}/>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -196,6 +180,8 @@ const Page1 = () => {
                     </Grid>
                 </Grid>
                 {audio && <AudioDialog open={audio} setOpen={setAudio} />}
+                {confirmDelete && <DeleteAlert open={confirmDelete} setOpen={setConfirmDelete} > </DeleteAlert> }
+
             </Grid>
             
         </Container>
