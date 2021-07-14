@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from "react";
+import React,{useState,useEffect,useRef} from "react";
 import { ReactMediaRecorder } from "react-media-recorder";
 import { Card,CardHeader,CardContent,CardActions,makeStyles,IconButton } from "@material-ui/core";
 import PlayArrowRoundedIcon from '@material-ui/icons/PlayArrowRounded';
@@ -22,6 +22,21 @@ const styles = makeStyles((theme)=>({
     }
 }));
 
+const VideoPreview = ({ stream }) =>{
+    const classes = styles();
+    const videoRef = useRef(null);
+   
+    useEffect(() => {
+      if (videoRef.current && stream) {
+        videoRef.current.srcObject = stream;
+      }
+    }, [stream]);
+    if (!stream) {
+      return null;
+    }
+    return <video className={classes.video} ref={videoRef} width={500} height={500} autoPlay controls />;
+  };
+
 const RecordView = () => {
     const [flag,setFlag] = useState('pause');
     const classes = styles();
@@ -42,11 +57,13 @@ const RecordView = () => {
         <Card raised className={classes.root}>
              <ReactMediaRecorder
                 video
-                render={({ status, startRecording,resumeRecording,pauseRecording, stopRecording, mediaBlobUrl }) => (
+                render={({ status, startRecording,resumeRecording,pauseRecording, stopRecording, mediaBlobUrl,previewStream }) => (
                     <>
                     <CardHeader subheader={status}/>
                     <CardContent>
-                        <video className={classes.video} src={mediaBlobUrl} controls autoplay />
+                        {
+                            status ==="stopped" ? <video className={classes.video} src={mediaBlobUrl} controls autopPlay /> : <VideoPreview stream={previewStream} />
+                        }
                     </CardContent>
                     <CardActions style={{display:'flex',justifyContent:'space-around'}}> 
                         <IconButton onClick={startRecording}>

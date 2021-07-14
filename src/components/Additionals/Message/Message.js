@@ -9,6 +9,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import MicIcon from '@material-ui/icons/Mic';
 import LinkIcon from '@material-ui/icons/Link';
 import Dialog1 from "../Dialogs/Dialog1";
+import Dialog3 from "../Dialogs/Dialog3";
 
 const styles = makeStyles((theme) => ({
     root: {
@@ -29,6 +30,7 @@ const Message = ({ setAudio}) => {
     const classes = styles();
     const [open, setOpen] = React.useState(false);
     const [openPlayer,setOpenPlayer] = React.useState(false);
+    const [openLink,setOpenLink] = React.useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -42,6 +44,9 @@ const Message = ({ setAudio}) => {
     const handleClick = (key) => {
         if(key === "Video"){
             setOpenPlayer(true);
+        }
+        if(key === "Link"){
+            setOpenLink(true);
         }
     }
     const actions = [
@@ -68,7 +73,7 @@ const Message = ({ setAudio}) => {
                     key={action.name}
                     icon={action.icon}
                     tooltipTitle={action.name}
-                    onClick={()=>handleClick(action.name)}
+                    onMouseDown={()=>handleClick(action.name)}
                 />
                 ))}
             </SpeedDial>
@@ -83,6 +88,9 @@ const Message = ({ setAudio}) => {
             />
             {
                 openPlayer ? <Dialog1 open={openPlayer} setOpen={setOpenPlayer}/> : null
+            }
+            {
+                openLink ? <Dialog3 open={openLink} setOpen={setOpenLink}/> : null
             }
         </div>
         </>

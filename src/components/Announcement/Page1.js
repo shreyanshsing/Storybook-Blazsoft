@@ -1,5 +1,5 @@
 import React from "react";
-import {Container,Typography,Grid,makeStyles,TextField,Button,IconButton,MenuItem,Checkbox,Divider,List,ListItem,ListItemIcon,ListItemText,ListItemSecondaryAction} from "@material-ui/core";
+import {Container,Typography,Grid,makeStyles,TextField,Button,IconButton,Checkbox,Divider,List,ListItem,ListItemIcon,ListItemText,ListItemSecondaryAction} from "@material-ui/core";
 import { useState } from "react";
 import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import DeleteOutlineRoundedIcon from '@material-ui/icons/DeleteOutlineRounded';
@@ -8,6 +8,10 @@ import DoubleArrowRoundedIcon from '@material-ui/icons/DoubleArrowRounded';
 import ArrowDropDownRoundedIcon from '@material-ui/icons/ArrowDropDownRounded';
 import Message from "../Additionals/Message/Message";
 import AudioDialog from '../Additionals/AudioRecorder/AudioDialog'
+import Dialog2 from "../Additionals/Dialogs/Dialog2";
+import { useSelector } from "react-redux";
+import { groupSelector } from "./redux/page1.slice";
+import Group from "../Additionals/Group/Group";
 
 const styles = makeStyles((theme)=>({
     root:{
@@ -42,6 +46,8 @@ const Page1 = () => {
     const [itemId,setItemId] = useState('');
     const [expand,setExpand] = useState(false);
     const [audio, setAudio] = React.useState(false);
+    const [openGroup,setOpenGroup] = useState(false);
+    const groups = useSelector(groupSelector);
 
     const handleExpand = (id) => {
         itemId === id ? setItemId("") : setItemId("1");
@@ -62,19 +68,7 @@ const Page1 = () => {
                         <Grid item sm={12}>
                             <Typography variant="subtitle1" gutterBottom>Create new announcement / notitfication - </Typography>
                         </Grid>
-                        <Grid item sm={5} className={classes.flex}>
-                            <Typography variant="body1" component="span" gutterBottom>Select Group - &nbsp;</Typography>
-                            <TextField
-                                select
-                                variant="outlined"
-                                margin="dense"
-                                required
-                                label=" For ">
-                                    <MenuItem value = "ALL">All</MenuItem>
-                                    <MenuItem value = "TEACHER">Teachers</MenuItem>
-                                    <MenuItem value = "STUDENT">Students</MenuItem>
-                            </TextField>
-                        </Grid>
+                        
                         <Grid item sm={5} className={classes.flex}>
                             <Typography variant="subtitle1" gutterBottom>Title / Label - &nbsp;</Typography>
                             <TextField
@@ -145,57 +139,19 @@ const Page1 = () => {
                     <Grid container spacing={3}>
                         <Grid item sm={12} className={classes.flex1}>
                             <Typography variant="subtitle1" component="span" gutterBottom>Groups - </Typography>
-                            <Button color="primary" type="submit" variant="contained" size="large" className={classes.btn}>New Group</Button>
+                            <Button color="primary" type="submit" variant="contained" size="large" onClick={()=>setOpenGroup(true)} className={classes.btn}>New Group</Button>
                         </Grid>
                         <Grid item sm={12}>
                             <List>
-                                <ListItem divider>
-                                    <ListItemIcon>
-                                        <Checkbox/>
-                                    </ListItemIcon>
-                                    <ListItemText primary="All" secondary="Recipients - Admin, Ram, Saloni, Pavan...."/>
-                                    <ListItemSecondaryAction>
-                                        <IconButton>
-                                            <EditRoundedIcon color="primary"/>
-                                        </IconButton>
-                                        <IconButton>
-                                            <DeleteOutlineRoundedIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <ListItem divider>
-                                    <ListItemIcon>
-                                        <Checkbox/>
-                                    </ListItemIcon>
-                                    <ListItemText primary="Student's Group" secondary="Recipients - Admin, Ram, Saloni, Pavan...."/>
-                                    <ListItemSecondaryAction>
-                                        <IconButton>
-                                            <EditRoundedIcon color="primary"/>
-                                        </IconButton>
-                                        <IconButton>
-                                            <DeleteOutlineRoundedIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
-                                <ListItem divider>
-                                    <ListItemIcon>
-                                        <Checkbox/>
-                                    </ListItemIcon>
-                                    <ListItemText primary="Teacher's Group" secondary="Recipients - Admin, Ram, Saloni, Pavan...."/>
-                                    <ListItemSecondaryAction>
-                                        <IconButton>
-                                            <EditRoundedIcon color="primary"/>
-                                        </IconButton>
-                                        <IconButton>
-                                            <DeleteOutlineRoundedIcon color="secondary"/>
-                                        </IconButton>
-                                    </ListItemSecondaryAction>
-                                </ListItem>
+                                {
+                                    groups.length > 0 && groups.map(item => <Group data={item}/>)
+                                }
                             </List>
                         </Grid>
                     </Grid>
                 </Grid>
                 {audio && <AudioDialog open={audio} setOpen={setAudio} />}
+                {openGroup ? <Dialog2 open={openGroup} setOpen={setOpenGroup}/> : null}
             </Grid>
             
         </Container>
